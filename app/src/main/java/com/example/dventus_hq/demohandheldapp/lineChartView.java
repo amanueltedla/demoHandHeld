@@ -1,6 +1,7 @@
 package com.example.dventus_hq.demohandheldapp;
 
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -25,13 +26,11 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class lineChartView extends Fragment {
-
     private LineChart lineChart;
 
     public lineChartView() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,6 +69,8 @@ public class lineChartView extends Fragment {
         lineChart.invalidate(); // refresh
         return rootView;
     }
-
+   public void updateChart(){
+       lineChart.invalidate();
+   }
 
 }

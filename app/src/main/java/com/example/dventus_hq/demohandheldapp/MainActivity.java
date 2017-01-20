@@ -304,6 +304,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
 
             connectionList.setOnItemClickListener(this);
 
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -324,6 +325,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                         //String filename = df.format(Calendar.getInstance().getTime());
                         //blue_status.setText("Connected to " + selectedDevice.getName() + " incoming data...");
                        //blue_status.setBackgroundColor(getResources().getColor(R.color.status_connect));
+                        Fragment fragment = new lineChartView();
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.content_frame, fragment);
+                        ft.addToBackStack(null);
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        ft.commit();
                        ConnectedThread receiveMessage = new ConnectedThread(getApplicationContext(), "newData" + ".txt");
                       receiveMessage.start();
                     }
