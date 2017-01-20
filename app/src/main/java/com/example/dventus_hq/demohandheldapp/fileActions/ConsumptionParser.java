@@ -1,13 +1,14 @@
 package com.example.dventus_hq.demohandheldapp.fileActions;
 
+import com.example.dventus_hq.demohandheldapp.parameters.Consumption;
 import com.example.dventus_hq.demohandheldapp.parameters.ConsumptionData;
 import com.example.dventus_hq.demohandheldapp.parameters.DailyCons;
 import com.example.dventus_hq.demohandheldapp.parameters.MeterInfo;
 import com.example.dventus_hq.demohandheldapp.parameters.ParameterType;
 import com.example.dventus_hq.demohandheldapp.parameters.TamperType;
 
-
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ConsumptionParser {
@@ -125,7 +126,23 @@ public class ConsumptionParser {
 		// ConsumptionParser.logger.info("Invalid frame!!!");
 		// do nothing
 		// }
+		public static List<Consumption> changeDaily(DailyCons dailycons)
+		{List<Consumption> cons=new ArrayList<Consumption>();
 
+			for(int i=0;i<dailycons.getDailyCons().size();i++) {
+				Consumption con= new Consumption();
+				con.setConsumption(Double.valueOf(dailycons.getDailyCons().get(i)));
+				con.setStartTime(ConsumptionParser.addDayToTime(dailycons.getDailyConsStartTime(),i));
+				con.setEndTime(ConsumptionParser.addDayToTime(dailycons.getDailyConsStartTime(),i+1));
+				cons.add(con);
+			}
+			return cons;
+
+		}
+	public static long addDayToTime(String s,int days )
+	{
+		return FileReader.getTimeStamp(s).plusDays(days).getMillis();
+	}
 	}
 
 
