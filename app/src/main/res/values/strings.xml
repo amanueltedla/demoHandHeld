@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Meter Reader</string>
+    <string-array name="titles">
+        <item>Home</item>
+        <item>Live Reading</item>
+        <item>Reading History</item>
+        <item>Setting</item>
+    </string-array>
+    <string-array name="ReadingCategories">
+        <item>Meter Information</item>
+        <item>Consumption</item>
+        <item>Events</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close drawer</string>
+</resources>
