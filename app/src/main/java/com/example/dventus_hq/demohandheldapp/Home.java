@@ -47,21 +47,22 @@ public class Home extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if(view.getId() == R.id.readingButton){
             Fragment fragment = new Readings();
-            loadFragment(fragment);
+            loadFragment(fragment,"readingHistory");
         }
         else if(view.getId() == R.id.settingButton){
             Fragment fragment = new Setting();
-            loadFragment(fragment);
+            loadFragment(fragment,"Setting");
         }
         else if(view.getId() == R.id.liveReadingButton){
-            Fragment fragment = new lineChartView();
-            loadFragment(fragment);
+            Fragment fragment = new LiveConsumption();
+            MainActivity.setListener((MainActivity.LiveEventInterface) fragment);
+            loadFragment(fragment,"LiveConsumption");
         }
 
     }
-    private void loadFragment(Fragment fragment){
+    private void loadFragment(Fragment fragment,String fragmentTag){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame,fragment);
+        ft.replace(R.id.content_frame,fragment,fragmentTag);
         ft.addToBackStack(null);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();

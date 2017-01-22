@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Meter Reader</string>
+    <string name="app_name">SMART METER LOGGER</string>
     <string-array name="titles">
         <item>Home</item>
         <item>Live Reading</item>

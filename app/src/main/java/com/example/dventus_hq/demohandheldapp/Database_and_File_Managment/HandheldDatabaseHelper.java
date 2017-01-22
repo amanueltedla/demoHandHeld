@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class HandheldDatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "MeterReadings"; // the name of our database
+    private static final String DB_NAME = "MeterConsumption"; // the name of our database
     private static final int DB_VERSION = 1; // the version of the database
 
     public HandheldDatabaseHelper(Context context) {

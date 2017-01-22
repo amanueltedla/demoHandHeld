@@ -2,6 +2,7 @@ package com.example.dventus_hq.demohandheldapp;
 
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Environment;
@@ -43,7 +44,9 @@ public class MeterInfo extends Fragment {
         RoundCornerProgressBar progress1 = (RoundCornerProgressBar) rootView.findViewById(R.id.progress_1);
         meterIdText = (EditText) rootView.findViewById(R.id.meterIdText);
         powerLevelText = (TextView) rootView.findViewById(R.id.powerLevelText);
+        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"fonts/digital-7.ttf");
         clockText = (EditText) rootView.findViewById(R.id.clockText);
+        clockText.setTypeface(tf);
         progress1.setProgressColor(Color.parseColor("#4CAF50"));
         progress1.setProgressBackgroundColor(Color.parseColor("#F5F5F5"));
         progress1.setMax(100);

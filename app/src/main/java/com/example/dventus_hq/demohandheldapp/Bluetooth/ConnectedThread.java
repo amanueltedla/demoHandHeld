@@ -4,7 +4,9 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +39,7 @@ public class ConnectedThread extends Thread {
     TextView valueFrom;
 
 
-    public ConnectedThread(Context context, String filename) {
+    public ConnectedThread(Context context,Handler handler,String filename) {
         mmSocket = ConnectThread.mmSocket;
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
@@ -45,7 +47,7 @@ public class ConnectedThread extends Thread {
         mfile = new MeterFile(mContext);
         // mHandler = handler;
         mFilename = filename;
-
+        mHandler = handler;
         //this.mContext = mContext;
         //this.valueFrom = valueFrom;
 
@@ -98,12 +100,17 @@ public class ConnectedThread extends Thread {
                     parser.setFlowRate(3);
                     parser.setEvent("dfdfd");
                     //parser.parseFrame(paketByte);
-                    Thread.sleep(500);
+
                     dbHandler.insertMeterConsumption(db, parser.getConsumption(), parser.getFlowRate(),parser.getEvent());
                     for (byte b : paketByte) {
                         sb.append(String.format("%02X ", b));
                     }
                     String sbb = sb.toString();
+                    Message msg = mHandler.obtainMessage(1);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Data",sbb);
+                    msg.setData(bundle);
+                    mHandler.sendMessage(msg);
                     // for(int i=0;i <=10000;i++);
                     mfile.addStreamData(sbb, mFilename);// generate file with file name mFilename
                     if (filerecieved) {

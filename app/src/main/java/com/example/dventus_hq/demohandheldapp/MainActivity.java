@@ -3,6 +3,7 @@ package com.example.dventus_hq.demohandheldapp;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -57,6 +58,15 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
     Set<BluetoothDevice> pairedBD;
     ArrayList<String> listBD;
     BroadcastReceiver mReceiver;
+    private static LiveEventInterface listener ;
+    public interface LiveEventInterface
+    {
+        void Update() ;
+    }
+    public static void setListener(LiveEventInterface listener)
+    {
+        MainActivity.listener = listener ;
+    }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -240,6 +250,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         switch (position) {
             case 1:
                 fragment = new lineChartView();
+                setListener((LiveEventInterface) fragment);
                 break;
             case 2:
                 fragment = new Readings();
@@ -282,7 +293,13 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
-
+    public void loadFragment(Fragment fragment){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame,fragment);
+        ft.addToBackStack(null);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
@@ -317,8 +334,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                 case 0:
                     if (null != context) {
                         statusDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), msg.getData().getString("BluetoothMessage"),
-                                Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getApplicationContext(), msg.getData().getString("BluetoothMessage"),
+                               // Toast.LENGTH_SHORT).show();
                         //item2.setVisible(false);
                         //item3.setVisible(true);
                        // DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
@@ -331,13 +348,17 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
 //                        ft.addToBackStack(null);
 //                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 //                        ft.commit();
-                       ConnectedThread receiveMessage = new ConnectedThread(getApplicationContext(), "newData" + ".txt");
+                        if(getFragmentManager().findFragmentById(R.id.content_frame).getTag()!= null && getFragmentManager().findFragmentById(R.id.content_frame).getTag().equals("LiveConsumption")) {
+                            listener.Update();
+                        }
+                       ConnectedThread receiveMessage = new ConnectedThread(getApplicationContext(),mHandler, "newData" + ".txt");
                       receiveMessage.start();
                     }
                     break;
                 case 1:
                 {
-
+//                    Toast.makeText(getApplicationContext(), msg.getData().getString("Data"),
+//                            Toast.LENGTH_SHORT).show();
                     break;
                 }
 
