@@ -66,7 +66,6 @@ public class ConnectedThread extends Thread {
 
         } catch (Exception e) {
         }
-
         mmInStream = tmpIn;
         mmOutStream = tmpOut;
         //this.run();
@@ -74,118 +73,55 @@ public class ConnectedThread extends Thread {
 
     @Override
     public void run() {
-
         //byte[] buffer = new byte[9000];  // buffer store for the stream
         //int bytes; // bytes returned from read()
-
         // Keep listening to the InputStream until an exception occurs
         int ifavailable;
         boolean filerecieved = true;
-
         while (!Thread.interrupted()) {
-
             try {
                 //String checkup2 = mmDevice.;
                 //Log.d("",checkup2);
-
                 filerecieved = true;
                 DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
                 mFilename = df.format(Calendar.getInstance().getTime());
-            ifavailable = mmSocket.getInputStream().available();
-            // Read from the InputStream
-            //byte[] packet = {1,2,3,4,4};
-            //this.write(packet);
-            if (ifavailable > 0) {
-                byte[] paketByte = new byte[ifavailable];
-                mmInStream.read(paketByte);
-                StringBuilder sb = new StringBuilder();
-                for (byte b : paketByte) {
-                    sb.append(String.format("%02X ", b));
+                ifavailable = mmSocket.getInputStream().available();
+                // Read from the InputStream
+                //byte[] packet = {1,2,3,4,4};
+                //this.write(packet);
+                Parser parser = new Parser();
+                if (ifavailable > 0) {
+                    byte[] paketByte = new byte[ifavailable];
+                    mmInStream.read(paketByte);
+                    StringBuilder sb = new StringBuilder();
+                    parser.setConsumption(paketByte.length);
+                    parser.setFlowRate(3);
+                    parser.setEvent("dfdfd");
+                    //parser.parseFrame(paketByte);
+                    Thread.sleep(500);
+                    dbHandler.insertMeterConsumption(db, parser.getConsumption(), parser.getFlowRate(),parser.getEvent());
+                    for (byte b : paketByte) {
+                        sb.append(String.format("%02X ", b));
+                    }
+                    String sbb = sb.toString();
+                    // for(int i=0;i <=10000;i++);
+                    mfile.addStreamData(sbb, mFilename);// generate file with file name mFilename
+                    if (filerecieved) {
+                        dbHandler.insertMeterFile(db, mFilename, "Unsent", "Generated");
+                        filerecieved = false;
+                    }
                 }
-                String sbb = sb.toString();
-                // for(int i=0;i <=10000;i++);
-                mfile.addStreamData(sbb, mFilename);// generate file with file name mFilename
-                if (filerecieved) {
-                    dbHandler.insertMeterFile(db, mFilename, "Unsent", "Generated");
-                    filerecieved = false;
-                }
-
-                //intialize interpreter(packetByte)
-                //Interpreter interpreter = new Interpreter(paketByte);
-                // String checkup = interpreter.Check();
-                //check byte
-                //if data and acknowlged device.............
-//                    if(interpreter.Check()=="acknowledgment")
-//                    {
-//                        this.write(interpreter.getAcknowldgmentByte());
-//                        StringBuilder sb = new StringBuilder();
-//                        for (byte b : paketByte) {
-//                            sb.append(String.format("%02X ", b));
-//                        }
-//                        String sbb = sb.toString();
-//                        // for(int i=0;i <=10000;i++);
-//                        mfile.addStreamData(sbb, mFilename);// generate file with file name mFilename
-//                        if (filerecieved) {
-//                            dbHandler.insertMeterFile(db, mFilename, "Unsent", "Generated");
-//                            filerecieved = false;
-//                        }
-//
-//                    }
-//                    else if (interpreter.Check().equals("data" )&& interpreter.isAckAccepted()) {
-//                        StringBuilder sb = new StringBuilder();
-//                        for (byte b : paketByte) {
-//                            sb.append(String.format("%02X ", b));
-//                        }
-//                        String sbb = sb.toString();
-//                        // for(int i=0;i <=10000;i++);
-//                        mfile.addStreamData(sbb, mFilename);// generate file with file name mFilename
-//                        if (filerecieved) {
-//                            dbHandler.insertMeterFile(db, mFilename, "Unsent", "Generated");
-//                            filerecieved = false;
-//                        }
-////                for (int i : paketByte)
-////                      Log.d("from server", "" + i);
-//                    }
-//                    else
-//                    {
-//                        StringBuilder sb = new StringBuilder();
-//                        for (byte b : paketByte) {
-//                            sb.append(String.format("%02X ", b));
-//                        }
-//                        String sbb = sb.toString();
-//                        // for(int i=0;i <=10000;i++);
-//                        mfile.addStreamData(sbb, mFilename);// generate file with file name mFilename
-//                        if (filerecieved) {
-//                            dbHandler.insertMeterFile(db, mFilename, "Unsent", "Generated");
-//                            filerecieved = false;
-//                        }
-//                    }
-                //if data acknowlged device............
-                //else.....
-
-                //byteAck=interpreter.getAcknowldgmentByte();
-                //write(byteAck);
-                //else......
-
-
-                // Send the obtained bytes to the UI activity
-                // mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+            } catch (Exception e) {
+                e.getMessage();
             }
-        }catch(Exception e){
-            e.getMessage();
         }
+        Log.d("", "Interupted");
     }
-
-    Log.d("","Interupted");
-}
-
 
     /* Call this from the main activity to send data to the remote device */
     public void write(byte[] bytes) {
         try {
-
             mmOutStream.write(bytes);
-
         } catch (Exception e) {
         }
     }

@@ -23,6 +23,11 @@ public class HandheldDatabaseHelper extends SQLiteOpenHelper {
                 + "METER_ID TEXT, "
                 + "EMAIL_STATUS TEXT, "
                 + "FILE_STATUS TEXT);");
+        db.execSQL("CREATE TABLE METER_DATA("
+                + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "CONSUMPTION INTEGER, "
+                + "FLOW_RATE INTEGER, "
+                + "EVENT TEXT);");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -31,11 +36,25 @@ public class HandheldDatabaseHelper extends SQLiteOpenHelper {
     public static void insertMeterFile(SQLiteDatabase db, String meterId,String emailStatus,String fileStatus) {
         ContentValues MeterFileValues = new ContentValues();
         MeterFileValues.put("METER_ID", meterId);
-        //MeterFileValues.put("METER_FILE", mfile.toString());
         MeterFileValues.put("EMAIL_STATUS", emailStatus);
         MeterFileValues.put("FILE_STATUS", fileStatus);
         db.insert("METER_FILE", null,MeterFileValues);
 
+    }
+    public static void insertMeterConsumption(SQLiteDatabase db,int consumption, int flowRate,String event){
+        ContentValues meterConsumptionValues = new ContentValues();
+        meterConsumptionValues.put("CONSUMPTION",consumption);
+        meterConsumptionValues.put("FLOW_RATE",flowRate);
+        meterConsumptionValues.put("EVENT",event);
+        db.insert("METER_DATA",null,meterConsumptionValues);
+    }
+    public static Cursor loadConsumption(SQLiteDatabase db){
+        Cursor cursor = db.query ("METER_DATA",
+                new String[] {"CONSUMPTION"},
+                null,
+                null,
+                null, null,null);
+        return cursor;
     }
     public static String loadMeter_Id(SQLiteDatabase db) {
         Cursor cursor = db.query ("METER_FILE",

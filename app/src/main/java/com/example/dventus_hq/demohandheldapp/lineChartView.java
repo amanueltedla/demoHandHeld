@@ -2,13 +2,18 @@ package com.example.dventus_hq.demohandheldapp;
 
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.dventus_hq.demohandheldapp.Database_and_File_Managment.HandheldDatabaseHelper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -27,6 +32,8 @@ import java.util.List;
  */
 public class lineChartView extends Fragment {
     private LineChart lineChart;
+    private SQLiteDatabase db;
+    private HandheldDatabaseHelper dbHandler;
 
     public lineChartView() {
         // Required empty public constructor
@@ -37,9 +44,19 @@ public class lineChartView extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_line_chart_view, container, false);
-        lineChart = (LineChart)rootView.findViewById(R.id.chart);
-       lineChart.animateY(2000);
-       // lineChart.animateX(3000);
+        try {
+            dbHandler = new HandheldDatabaseHelper(getActivity());
+
+        } catch (SQLiteException e) {
+            Toast toast = Toast.makeText(getActivity(), "Database unavailable", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        // Get the input and output streams, using temp objects because
+        db = dbHandler.getWritableDatabase();
+        getConsumptionData();
+        lineChart = (LineChart) rootView.findViewById(R.id.chart);
+        lineChart.animateY(2000);
+        // lineChart.animateX(3000);
         //lineChart.animateXY(2000,3000);
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -69,8 +86,19 @@ public class lineChartView extends Fragment {
         lineChart.invalidate(); // refresh
         return rootView;
     }
-   public void updateChart(){
-       lineChart.invalidate();
-   }
 
+    public void updateChart() {
+        lineChart.invalidate();
+    }
+
+    private void getConsumptionData() {
+        Cursor cursor = dbHandler.loadConsumption(db);
+        List<Integer> consumptionList = new ArrayList();
+        if (cursor.moveToFirst()) {
+            consumptionList.add(cursor.getInt(0));
+        }
+        while (cursor.moveToNext()) ;
+    }
 }
+
+
