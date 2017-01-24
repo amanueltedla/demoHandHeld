@@ -34,7 +34,6 @@ public class lineChartView extends Fragment {
     private LineChart lineChart;
     private SQLiteDatabase db;
     private HandheldDatabaseHelper dbHandler;
-
     public lineChartView() {
         // Required empty public constructor
     }
@@ -53,7 +52,7 @@ public class lineChartView extends Fragment {
         }
         // Get the input and output streams, using temp objects because
         db = dbHandler.getWritableDatabase();
-        getConsumptionData();
+        //getConsumptionData();
         lineChart = (LineChart) rootView.findViewById(R.id.chart);
         lineChart.animateY(2000);
         // lineChart.animateX(3000);
@@ -87,20 +86,7 @@ public class lineChartView extends Fragment {
         return rootView;
     }
 
-    public void updateChart() {
-        lineChart.invalidate();
-    }
 
-    private void getConsumptionData() {
-        Cursor cursor = dbHandler.loadConsumption(db);
-        List<Integer> consumptionList = new ArrayList();
-        do {
-            if (cursor.moveToFirst()) {
-                consumptionList.add(cursor.getInt(0));
-            }
-
-        }while (cursor.moveToNext());
-    }
 }
 
 

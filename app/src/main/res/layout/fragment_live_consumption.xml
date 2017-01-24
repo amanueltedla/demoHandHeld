@@ -28,6 +28,30 @@
         android:textColor="#1B5E20"
         android:textSize="30dp" />
 
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:id="@+id/radioGroup">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="0000000000000001"
+            android:layout_marginTop="5dp"
+            android:id="@+id/radioButton"
+            android:checked="true"
+            android:textSize="17dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="0000000000000102"
+            android:layout_marginTop="5dp"
+            android:id="@+id/radioButton2"
+            android:checked="false"
+            android:textSize="17dp" />
+    </RadioGroup>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -65,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="L/S"
+            android:text="LPM"
             android:id="@+id/textView27"
             android:textColor="#000000"
             android:layout_gravity="center_vertical"
@@ -73,7 +97,7 @@
             android:textSize="17dp" />
 
         <FrameLayout
-            android:layout_width="100dp"
+            android:layout_width="140dp"
             android:layout_height="50dp"
             android:background="#E0E0E0"
             android:layout_gravity="center_vertical"
@@ -94,7 +118,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Gpm"
+            android:text="GPM"
             android:id="@+id/textView28"
             android:textColor="#000000"
             android:layout_gravity="center_vertical"
@@ -148,11 +172,11 @@
             android:textSize="17dp" />
 
         <FrameLayout
-            android:layout_width="100dp"
+            android:layout_width="140dp"
             android:layout_height="50dp"
             android:background="#E0E0E0"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="7dp" >
+            android:layout_marginLeft="20dp" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -244,6 +268,7 @@
 
                 <FrameLayout
                     android:layout_width="100dp"
+                    android:id="@+id/reverseFrame"
                     android:layout_height="20dp"
                     android:background="#BDBDBD" />
 
@@ -267,6 +292,7 @@
                 <FrameLayout
                     android:layout_width="100dp"
                     android:layout_height="20dp"
+                    android:id="@+id/leakFrame"
                     android:background="#BDBDBD" />
 
                 <TextView
@@ -287,7 +313,8 @@
                 <FrameLayout
                     android:layout_width="100dp"
                     android:layout_height="20dp"
-                    android:background="#F44336"
+                    android:background="#BDBDBD"
+                    android:id="@+id/contaminationFrame"
                     android:layout_marginBottom="10dp" />
 
                 <TextView
@@ -316,6 +343,7 @@
                 <FrameLayout
                     android:layout_width="100dp"
                     android:layout_height="20dp"
+                    android:id="@+id/magTamperFrame"
                     android:background="#BDBDBD" />
 
                 <TextView
@@ -338,6 +366,7 @@
                 <FrameLayout
                     android:layout_width="100dp"
                     android:layout_height="20dp"
+                    android:id="@+id/coverFrame"
                     android:background="#BDBDBD" />
 
                 <TextView
@@ -358,6 +387,7 @@
                 <FrameLayout
                     android:layout_width="100dp"
                     android:layout_height="20dp"
+                    android:id="@+id/lowPowerFrame"
                     android:background="#BDBDBD"
                     android:layout_marginBottom="10dp" />
 

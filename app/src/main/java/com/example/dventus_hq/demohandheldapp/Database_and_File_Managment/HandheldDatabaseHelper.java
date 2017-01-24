@@ -26,6 +26,7 @@ public class HandheldDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE METER_DATA("
                 + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "CONSUMPTION INTEGER, "
+                + "METER_ID TEXT, "
                 + "FLOW_RATE INTEGER, "
                 + "EVENT TEXT);");
     }
@@ -41,18 +42,19 @@ public class HandheldDatabaseHelper extends SQLiteOpenHelper {
         db.insert("METER_FILE", null,MeterFileValues);
 
     }
-    public static void insertMeterConsumption(SQLiteDatabase db,int consumption, int flowRate,String event){
+    public static void insertMeterConsumption(SQLiteDatabase db,long consumption, long flowRate,String event,String meterId){
         ContentValues meterConsumptionValues = new ContentValues();
         meterConsumptionValues.put("CONSUMPTION",consumption);
         meterConsumptionValues.put("FLOW_RATE",flowRate);
         meterConsumptionValues.put("EVENT",event);
+        meterConsumptionValues.put("METER_ID",meterId);
         db.insert("METER_DATA",null,meterConsumptionValues);
     }
-    public static Cursor loadConsumption(SQLiteDatabase db){
+    public static Cursor loadConsumption(SQLiteDatabase db, String meterId){
         Cursor cursor = db.query ("METER_DATA",
-                new String[] {"CONSUMPTION"},
-                null,
-                null,
+                new String[] {"CONSUMPTION","FLOW_RATE","EVENT"},
+                "METER_ID = ?",
+                new String[] {meterId},
                 null, null,null);
         return cursor;
     }
@@ -111,6 +113,6 @@ public class HandheldDatabaseHelper extends SQLiteOpenHelper {
                new String[]{meterID});
    }
     public static void clearDatabase(SQLiteDatabase db){
-        db.execSQL("delete from "+ "METER_FILE");
+        db.execSQL("delete from "+ "METER_DATA");
     }
 }

@@ -2,7 +2,7 @@
     <string name="app_name">SMART METER LOGGER</string>
     <string-array name="titles">
         <item>Home</item>
-        <item>Live Reading</item>
+        <item>Live Consumption</item>
         <item>Reading History</item>
         <item>Setting</item>
     </string-array>

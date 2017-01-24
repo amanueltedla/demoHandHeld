@@ -185,7 +185,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             statusDialog.show();
             ConnectThread connect2 = new ConnectThread(selectedDevice,mBluetoothAdapter, mHandler, getApplicationContext());
             connect2.start();
-
         }
     }
 
@@ -249,7 +248,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         Fragment fragment;
         switch (position) {
             case 1:
-                fragment = new lineChartView();
+                fragment = new LiveConsumption();
                 setListener((LiveEventInterface) fragment);
                 break;
             case 2:
@@ -334,23 +333,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                 case 0:
                     if (null != context) {
                         statusDialog.dismiss();
-                       // Toast.makeText(getApplicationContext(), msg.getData().getString("BluetoothMessage"),
-                               // Toast.LENGTH_SHORT).show();
-                        //item2.setVisible(false);
-                        //item3.setVisible(true);
-                       // DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
-                        //String filename = df.format(Calendar.getInstance().getTime());
-                        //blue_status.setText("Connected to " + selectedDevice.getName() + " incoming data...");
-                       //blue_status.setBackgroundColor(getResources().getColor(R.color.status_connect));
-//                        Fragment fragment = new lineChartView();
-//                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                        ft.replace(R.id.content_frame, fragment);
-//                        ft.addToBackStack(null);
-//                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//                        ft.commit();
-                        if(getFragmentManager().findFragmentById(R.id.content_frame).getTag()!= null && getFragmentManager().findFragmentById(R.id.content_frame).getTag().equals("LiveConsumption")) {
-                            listener.Update();
-                        }
                        ConnectedThread receiveMessage = new ConnectedThread(getApplicationContext(),mHandler, "newData" + ".txt");
                       receiveMessage.start();
                     }
@@ -359,6 +341,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                 {
 //                    Toast.makeText(getApplicationContext(), msg.getData().getString("Data"),
 //                            Toast.LENGTH_SHORT).show();
+                    if(getFragmentManager().findFragmentById(R.id.content_frame).getTag()!= null && getFragmentManager().findFragmentById(R.id.content_frame).getTag().equals("LiveConsumption")) {
+                        listener.Update();
+                    }
                     break;
                 }
 

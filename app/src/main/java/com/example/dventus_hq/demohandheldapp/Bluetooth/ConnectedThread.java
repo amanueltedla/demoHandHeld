@@ -30,12 +30,12 @@ public class ConnectedThread extends Thread {
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
-    private HandheldDatabaseHelper dbHandler;
-    private Handler mHandler;
+    private static HandheldDatabaseHelper dbHandler;
+    private static Handler mHandler;
     private String mFilename;
     MeterFile mfile;
     Context mContext;
-    SQLiteDatabase db;
+    private static SQLiteDatabase db;
     TextView valueFrom;
 
 
@@ -80,6 +80,7 @@ public class ConnectedThread extends Thread {
         // Keep listening to the InputStream until an exception occurs
         int ifavailable;
         boolean filerecieved = true;
+        Parser parser = new Parser();
         while (!Thread.interrupted()) {
             try {
                 //String checkup2 = mmDevice.;
@@ -91,17 +92,11 @@ public class ConnectedThread extends Thread {
                 // Read from the InputStream
                 //byte[] packet = {1,2,3,4,4};
                 //this.write(packet);
-                Parser parser = new Parser();
                 if (ifavailable > 0) {
                     byte[] paketByte = new byte[ifavailable];
                     mmInStream.read(paketByte);
                     StringBuilder sb = new StringBuilder();
-                    parser.setConsumption(paketByte.length);
-                    parser.setFlowRate(3);
-                    parser.setEvent("dfdfd");
-                    //parser.parseFrame(paketByte);
-
-                    dbHandler.insertMeterConsumption(db, parser.getConsumption(), parser.getFlowRate(),parser.getEvent());
+                    parser.parseFrame(paketByte,dbHandler,db,mHandler);
                     for (byte b : paketByte) {
                         sb.append(String.format("%02X ", b));
                     }
