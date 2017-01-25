@@ -78,11 +78,10 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
         meter1.setOnClickListener(this);
         meter2 = (RadioButton) rootView.findViewById(R.id.radioButton2);
         meter2.setOnClickListener(this);
-        setSelectedMeter(""+meter1.getText());
+        setSelectedMeter("0000000000000001");
         reverseFrame = (FrameLayout)rootView.findViewById(R.id.reverseFrame);
         leakFrame = (FrameLayout)rootView.findViewById(R.id.leakFrame);
         contaminationFrame = (FrameLayout)rootView.findViewById(R.id.contaminationFrame);
-        magTamperFrame = (FrameLayout)rootView.findViewById(R.id.magTamperFrame);
         coverFrame = (FrameLayout)rootView.findViewById(R.id.coverFrame);
         lowPowerFrame = (FrameLayout)rootView.findViewById(R.id.lowPowerFrame);
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/digital-7.ttf");
@@ -123,7 +122,7 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
         yAxis.setDrawGridLines(false);
         List<Entry> entries = new ArrayList<>();
         entries.add(new Entry(0, 0));
-        dataSet = new LineDataSet(entries, "Consumption(Liter) vs Time");
+        dataSet = new LineDataSet(entries, "Consumption(Liter)");
         dataSet.setDrawCircles(false);
         dataSet.setDrawValues(false);
         dataSet.setDrawFilled(true);
@@ -137,7 +136,6 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
 
     @Override
     public void Update() {
-        consumptionGallon.setText("100");
         Cursor cursor = dbHandler.loadConsumption(db,getSelectedMeter());
         List<Integer> consumptionList = new ArrayList();
         if (cursor.moveToFirst()) {
@@ -170,11 +168,11 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
     @Override
     public void onClick(View view) {
        if(meter1.isChecked()){
-           setSelectedMeter(""+meter1.getText());
+           setSelectedMeter("0000000000000001");
        }
         else
        {
-           setSelectedMeter(""+meter2.getText());
+           setSelectedMeter("0000000000000102");
        }
         Update();
     }

@@ -42,12 +42,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Set;
 
-public class MainActivity extends Activity implements AdapterView.OnItemClickListener{
+public class MainActivity extends Activity implements AdapterView.OnItemClickListener {
     private DrawerLayout drawerLayout;
     private String[] titles;
     private ListView drawerList;
     private RelativeLayout drawerRelativeLayout;
-    private ActionBarDrawerToggle drawerToggle;
     private ListView connectionList;
     ArrayAdapter<String> listAdapter;
     public Dialog dialog;
@@ -58,14 +57,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
     Set<BluetoothDevice> pairedBD;
     ArrayList<String> listBD;
     BroadcastReceiver mReceiver;
-    private static LiveEventInterface listener ;
-    public interface LiveEventInterface
-    {
-        void Update() ;
+    private static LiveEventInterface listener;
+
+    public interface LiveEventInterface {
+        void Update();
     }
-    public static void setListener(LiveEventInterface listener)
-    {
-        MainActivity.listener = listener ;
+
+    public static void setListener(LiveEventInterface listener) {
+        MainActivity.listener = listener;
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -75,6 +74,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             selectItem(position);
         }
     }
+
     public void blueFunction() {
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -86,7 +86,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         } else {
 
             if (mBluetoothAdapter.isEnabled()) {
-                    pairedDevices();
+                pairedDevices();
 
             }
 
@@ -97,6 +97,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             }
         }
     }
+
     public void pairedDevices() {
 
         pairedBD = mBluetoothAdapter.getBondedDevices();
@@ -116,12 +117,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
 
         scanning();
     }
+
     private void startDiscovery() {
 
         mBluetoothAdapter.cancelDiscovery();
         mBluetoothAdapter.startDiscovery();
 
     }
+
     public void scanning() {
         startDiscovery();
 
@@ -132,29 +135,25 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                 if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 
                     BluetoothDevice bluetoothDeviceFound = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    if(!listBD.contains(bluetoothDeviceFound.getName()+"\n"+bluetoothDeviceFound.getAddress())) {
+                    if (!listBD.contains(bluetoothDeviceFound.getName() + "\n" + bluetoothDeviceFound.getAddress())) {
 
                         listBD.add(bluetoothDeviceFound.getName() + "\n" + bluetoothDeviceFound.getAddress());
                         listAdapter.notifyDataSetChanged();
                         bluetoothDevices.add(bluetoothDeviceFound);
                     }
-                }
-                else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
+                } else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
                     //Device is now connected
                     Log.d("", "Device is now connected");
 
 
-                }
-                else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                     //Done searching
-                    Log.d("","Done searching");
+                    Log.d("", "Done searching");
 
-                }
-                else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
+                } else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
                     //Device is about to disconnect
-                    Log.d("","Device is about to disconnect");
-                }
-                else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+                    Log.d("", "Device is about to disconnect");
+                } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
                     //Device has disconnected
                     Log.d("", "Device has disconnected");
                     statusDialog.dismiss();
@@ -172,18 +171,19 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         registerReceiver(mReceiver, filter);
 
     }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         selectedDevice = bluetoothDevices.get(position);
-        if(selectedDevice != null);
+        if (selectedDevice != null) ;
         {
             dialog.dismiss();
             statusDialog.setMessage("Connecting with " + selectedDevice.getName());
             statusDialog.setIndeterminate(false);
             statusDialog.setCancelable(true);
             statusDialog.show();
-            ConnectThread connect2 = new ConnectThread(selectedDevice,mBluetoothAdapter, mHandler, getApplicationContext());
+            ConnectThread connect2 = new ConnectThread(selectedDevice, mBluetoothAdapter, mHandler, getApplicationContext());
             connect2.start();
         }
     }
@@ -205,23 +205,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         }
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setIcon(android.R.color.transparent);
-        //Create the ActionBarDrawerToggle
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-                R.string.open_drawer, R.string.close_drawer) {
-            //Called when a drawer has settled in a completely closed state
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                invalidateOptionsMenu();
-            }
-
-            //Called when a drawer has settled in a completely open state.
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                invalidateOptionsMenu();
-            }
-        };
         bluetoothDevices = new ArrayList<BluetoothDevice>();
-        drawerLayout.setDrawerListener(drawerToggle);
         dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.devicelist);
         dialog.setTitle("List of Devices");
@@ -229,9 +213,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             @Override
             public void onCancel(DialogInterface dialog) {
                 //do whatever you want the back key to do
-
                 //eblueFunction();
-
             }
         });
         statusDialog = new ProgressDialog(this);
@@ -281,29 +263,18 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         getActionBar().setTitle(title);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
-    }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
-    }
-    public void loadFragment(Fragment fragment){
+    public void loadFragment(Fragment fragment) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame,fragment);
+        ft.replace(R.id.content_frame, fragment);
         ft.addToBackStack(null);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+
         if (item.getItemId() == R.id.blueOn) {
             connectionList = (ListView) dialog.findViewById(R.id.deviceList);
             ProgressBar bar = (ProgressBar) dialog.findViewById(R.id.bar);
@@ -324,6 +295,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         }
         return super.onOptionsItemSelected(item);
     }
+
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -333,15 +305,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                 case 0:
                     if (null != context) {
                         statusDialog.dismiss();
-                       ConnectedThread receiveMessage = new ConnectedThread(getApplicationContext(),mHandler, "newData" + ".txt");
-                      receiveMessage.start();
+                        ConnectedThread receiveMessage = new ConnectedThread(getApplicationContext(), mHandler, "newData" + ".txt");
+                        receiveMessage.start();
                     }
                     break;
-                case 1:
-                {
+                case 1: {
 //                    Toast.makeText(getApplicationContext(), msg.getData().getString("Data"),
 //                            Toast.LENGTH_SHORT).show();
-                    if(getFragmentManager().findFragmentById(R.id.content_frame).getTag()!= null && getFragmentManager().findFragmentById(R.id.content_frame).getTag().equals("LiveConsumption")) {
+                    if (getFragmentManager().findFragmentById(R.id.content_frame).getTag() != null && getFragmentManager().findFragmentById(R.id.content_frame).getTag().equals("LiveConsumption")) {
                         listener.Update();
                     }
                     break;

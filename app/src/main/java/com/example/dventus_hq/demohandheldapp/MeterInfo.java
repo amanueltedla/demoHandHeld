@@ -29,6 +29,7 @@ public class MeterInfo extends Fragment {
     private EditText meterIdText;
     private EditText clockText;
     private TextView powerLevelText;
+    private TextView serialNumberText;
     private static final  SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
 
     public MeterInfo() {
@@ -44,9 +45,8 @@ public class MeterInfo extends Fragment {
         RoundCornerProgressBar progress1 = (RoundCornerProgressBar) rootView.findViewById(R.id.progress_1);
         meterIdText = (EditText) rootView.findViewById(R.id.meterIdText);
         powerLevelText = (TextView) rootView.findViewById(R.id.powerLevelText);
-        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),"fonts/digital-7.ttf");
         clockText = (EditText) rootView.findViewById(R.id.clockText);
-        clockText.setTypeface(tf);
+        serialNumberText = (EditText) rootView.findViewById(R.id.serialNumberText);
         progress1.setProgressColor(Color.parseColor("#4CAF50"));
         progress1.setProgressBackgroundColor(Color.parseColor("#F5F5F5"));
         progress1.setMax(100);
@@ -54,6 +54,7 @@ public class MeterInfo extends Fragment {
         meterIdText.setText(meterData.getMeterID());
         clockText.setText(formatter.format(FileReader.getTimeStamp(meterData.getEvents().getSysTime()).toDate()));
         powerLevelText.setText("" + meterData.getEvents().getBatLevel().getLevel() + "%");
+        serialNumberText.setText(meterData.getConsumption().getMeterInfo().getSerialNum());
         progress1.setProgress(meterData.getEvents().getBatLevel().getLevel());
         return rootView;
     }

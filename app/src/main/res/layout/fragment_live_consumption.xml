@@ -21,42 +21,68 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="SMART WATER METER LOGGER"
+        android:text="SMART WATER METER DATA LOGGER"
         android:id="@+id/textView25"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="7dp"
         android:textColor="#1B5E20"
         android:textSize="30dp" />
 
-    <RadioGroup
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:id="@+id/radioGroup">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp">
 
-        <RadioButton
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="0000000000000001"
-            android:layout_marginTop="5dp"
-            android:id="@+id/radioButton"
-            android:checked="true"
-            android:textSize="17dp" />
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Meter ID: "
+            android:id="@+id/textView38"
+            android:textSize="22dp"
+            android:layout_gravity="center"
+            android:textColor="#1B5E20"
+            android:layout_marginLeft="10dp" />
 
-        <RadioButton
+        <RadioGroup
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="0000000000000102"
-            android:layout_marginTop="5dp"
-            android:id="@+id/radioButton2"
-            android:checked="false"
-            android:textSize="17dp" />
-    </RadioGroup>
+            android:layout_height="wrap_content"
+            android:id="@+id/radioGroup"
+            android:orientation="horizontal"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="DVE0002221092"
+                android:layout_marginTop="10dp"
+                android:id="@+id/radioButton"
+                android:checked="true"
+                android:textSize="17dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="DVE0003021261"
+                android:layout_marginTop="10dp"
+                android:id="@+id/radioButton2"
+                android:checked="false"
+                android:textSize="17dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp" />
+        </RadioGroup>
+    </LinearLayout>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="20dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,7 +100,7 @@
             android:layout_height="50dp"
             android:background="#E0E0E0"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="42dp">
+            android:layout_marginLeft="39dp">
 
 
             <TextView
@@ -101,7 +127,7 @@
             android:layout_height="50dp"
             android:background="#E0E0E0"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp" >
+            android:layout_marginLeft="27dp" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -216,7 +242,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="consumption(Liter)"
+        android:text="Consumption(Liter)"
         android:id="@+id/textView37"
         android:textSize="15dp"
         android:layout_marginLeft="5dp" />
@@ -224,7 +250,7 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="350dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp" />
 
@@ -232,7 +258,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="time(sec)"
+        android:text="Time(sec)"
         android:id="@+id/textView36"
         android:layout_gravity="center_horizontal"
         android:textSize="15dp" />
@@ -333,28 +359,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp" >
-
-                <FrameLayout
-                    android:layout_width="100dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/magTamperFrame"
-                    android:background="#BDBDBD" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Magnetic Tamper"
-                    android:id="@+id/textView38"
-                    android:textSize="17dp"
-                    android:layout_marginLeft="7dp" />
-            </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
