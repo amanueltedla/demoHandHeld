@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SMART METER DATA LOGGER</string>
+    <string name="app_name">SMART WATER METER DATA LOGGER</string>
     <string-array name="titles">
         <item>Home</item>
         <item>Live Consumption</item>
@@ -10,6 +10,11 @@
         <item>Meter Information</item>
         <item>Consumption</item>
         <item>Events</item>
+    </string-array>
+
+    <string-array name="MeterIDArray">
+        <item>DVE0002221092</item>
+        <item>DVE0003021261</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

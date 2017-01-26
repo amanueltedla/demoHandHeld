@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="#4CAF50">
+        android:background="#0288d1">
 
         <TextView
             android:id="@+id/textView8"
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="#4CAF50">
+        android:background="#0288d1">
 
         <TextView
             android:id="@+id/textView9"
@@ -140,7 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="#4CAF50">
+        android:background="#0288d1">
 
         <TextView
             android:id="@+id/textView10"

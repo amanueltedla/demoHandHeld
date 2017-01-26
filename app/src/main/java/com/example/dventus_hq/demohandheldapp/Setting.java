@@ -52,6 +52,9 @@ public class Setting extends Fragment  implements View.OnClickListener {
     public void onClick(View view) {
         if(view.getId() == R.id.clearButton){
             dbHandler.clearDatabase(db);
+            Toast toast = Toast.makeText(getActivity(), "Database Cleared", Toast.LENGTH_SHORT);
+            toast.show();
+
         }
     }
 
@@ -59,5 +62,6 @@ public class Setting extends Fragment  implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         getActivity().getActionBar().setTitle("Settings");
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

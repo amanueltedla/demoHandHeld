@@ -46,7 +46,7 @@ public class Home extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.readingButton){
-            Fragment fragment = new Readings();
+            Fragment fragment = new singleReading();
             loadFragment(fragment,"readingHistory");
         }
         else if(view.getId() == R.id.settingButton){
@@ -67,4 +67,11 @@ public class Home extends Fragment implements View.OnClickListener {
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+        getActivity().getActionBar().setTitle("Home");
+    }
+
 }

@@ -26,7 +26,6 @@ private ListView readingLists;
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,11 +49,12 @@ private ListView readingLists;
         });
         return rootView;
     }
-    private void openFragment(int position)
-    {
+
+    private void openFragment(int position) {
         Fragment fragment = new singleReading();
         loadFragment(fragment);
     }
+
     private void loadFragment(Fragment fragment){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame,fragment);
@@ -62,6 +62,7 @@ private ListView readingLists;
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
+
     @Override
     public void onResume() {
         super.onResume();

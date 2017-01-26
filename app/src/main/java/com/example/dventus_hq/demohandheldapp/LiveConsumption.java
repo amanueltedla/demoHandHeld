@@ -11,9 +11,12 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,11 +37,11 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LiveConsumption extends Fragment implements MainActivity.LiveEventInterface,View.OnClickListener {
+public class LiveConsumption extends Fragment implements MainActivity.LiveEventInterface, View.OnClickListener, AdapterView.OnItemSelectedListener {
     private TextView flowLS;
-    private TextView flowGpm;
+    //private TextView flowGpm;
     private TextView consumptionLiter;
-    private TextView consumptionGallon;
+    //private TextView consumptionGallon;
     private LineChart lineChart;
     private SQLiteDatabase db;
     private HandheldDatabaseHelper dbHandler;
@@ -50,9 +53,7 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
     private FrameLayout magTamperFrame;
     private FrameLayout coverFrame;
     private FrameLayout lowPowerFrame;
-    private RadioGroup meterChoice;
-    private RadioButton meter1;
-    private RadioButton meter2;
+    private Spinner meterChooser;
 
     public String getSelectedMeter() {
         return selectedMeter;
@@ -63,27 +64,29 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
     }
 
     private String selectedMeter;
+
     public LiveConsumption() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_live_consumption, container, false);
-        meterChoice = (RadioGroup) rootView.findViewById(R.id.radioGroup);
-        meter1 = (RadioButton) rootView.findViewById(R.id.radioButton);
-        meter1.setOnClickListener(this);
-        meter2 = (RadioButton) rootView.findViewById(R.id.radioButton2);
-        meter2.setOnClickListener(this);
-        setSelectedMeter("0000000000000001");
-        reverseFrame = (FrameLayout)rootView.findViewById(R.id.reverseFrame);
-        leakFrame = (FrameLayout)rootView.findViewById(R.id.leakFrame);
-        contaminationFrame = (FrameLayout)rootView.findViewById(R.id.contaminationFrame);
-        coverFrame = (FrameLayout)rootView.findViewById(R.id.coverFrame);
-        lowPowerFrame = (FrameLayout)rootView.findViewById(R.id.lowPowerFrame);
+        View rootView = inflater.inflate(R.layout.fragment_check, container, false);
+        meterChooser = (Spinner) rootView.findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.MeterIDArray, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        meterChooser.setOnItemSelectedListener(this);
+// Apply the adapter to the spinner
+        meterChooser.setAdapter(adapter);
+        reverseFrame = (FrameLayout) rootView.findViewById(R.id.reverseFrame);
+        leakFrame = (FrameLayout) rootView.findViewById(R.id.leakFrame);
+        contaminationFrame = (FrameLayout) rootView.findViewById(R.id.contaminationFrame);
+        coverFrame = (FrameLayout) rootView.findViewById(R.id.coverFrame);
+        lowPowerFrame = (FrameLayout) rootView.findViewById(R.id.lowPowerFrame);
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/digital-7.ttf");
         try {
             dbHandler = new HandheldDatabaseHelper(getActivity());
@@ -92,20 +95,21 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
             Toast toast = Toast.makeText(getActivity(), "Database unavailable", Toast.LENGTH_SHORT);
             toast.show();
         }
+        setSelectedMeter("0000000000000001");
         // Get the input and output streams, using temp objects because
         db = dbHandler.getWritableDatabase();
         flowLS = (TextView) rootView.findViewById(R.id.flowLS);
         flowLS.setTextSize(40);
         flowLS.setTypeface(tf);
-        flowGpm = (TextView) rootView.findViewById(R.id.flowGpm);
-        flowGpm.setTextSize(40);
-        flowGpm.setTypeface(tf);
+        //flowGpm = (TextView) rootView.findViewById(R.id.flowGpm);
+        //flowGpm.setTextSize(40);
+        //flowGpm.setTypeface(tf);
         consumptionLiter = (TextView) rootView.findViewById(R.id.consumptionLiters);
         consumptionLiter.setTextSize(40);
         consumptionLiter.setTypeface(tf);
-        consumptionGallon = (TextView) rootView.findViewById(R.id.consumptionGallons);
-        consumptionGallon.setTextSize(40);
-        consumptionGallon.setTypeface(tf);
+        //consumptionGallon = (TextView) rootView.findViewById(R.id.consumptionGallons);
+        //consumptionGallon.setTextSize(40);
+        //consumptionGallon.setTypeface(tf);
         lineChart = (LineChart) rootView.findViewById(R.id.chart);
         lineChart.animateY(2000);
         // lineChart.animateX(3000);
@@ -126,9 +130,9 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
         dataSet.setDrawCircles(false);
         dataSet.setDrawValues(false);
         dataSet.setDrawFilled(true);
-        dataSet.setFillColor(Color.GREEN);
+        dataSet.setFillColor(Color.parseColor("#29B6F6"));
         dataSet.setFillAlpha(100);
-        dataSet.setColor(Color.parseColor("#388E3C"));
+        dataSet.setColor(Color.parseColor("#01579B"));
         dataSet.setValueTextColor(Color.BLACK);
         Update();
         return rootView;
@@ -136,7 +140,7 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
 
     @Override
     public void Update() {
-        Cursor cursor = dbHandler.loadConsumption(db,getSelectedMeter());
+        Cursor cursor = dbHandler.loadConsumption(db, getSelectedMeter());
         List<Integer> consumptionList = new ArrayList();
         if (cursor.moveToFirst()) {
             for (int k = 0; k < cursor.getCount(); k++) {
@@ -148,8 +152,7 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
                 }
                 cursor.moveToNext();
             }
-        }
-        else{
+        } else {
             setConsumptionValue(0);
             setFlowRateValue(0);
             setEventValue("0000");
@@ -157,7 +160,7 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
         List<Entry> entries = new ArrayList<>();
         entries.add(new Entry(0, 0));
         for (int i = 0; i < consumptionList.size(); i++) {
-            entries.add(new Entry(i + 2, consumptionList.get(i)));
+            entries.add(new Entry(i + 2,(consumptionList.get(i))));
         }
         dataSet.setValues(entries);
         lineChart.invalidate();
@@ -165,31 +168,40 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
         lineChart.setData(lineData);
         lineChart.invalidate();
     }
+
     @Override
     public void onClick(View view) {
-       if(meter1.isChecked()){
-           setSelectedMeter("0000000000000001");
-       }
-        else
-       {
-           setSelectedMeter("0000000000000102");
-       }
         Update();
     }
+
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        if (pos == 0) {
+            setSelectedMeter("0000000000000001");
+        } else if (pos == 1) {
+            setSelectedMeter("0000000000000102");
+        }
+        Update();
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
+    }
+
     private void setConsumptionValue(long anInt) {
-        consumptionLiter.setText(""+ anInt);
+        consumptionLiter.setText("" + anInt);
         double consGallon = convertFromLiterToGallon(anInt);
         DecimalFormat decimalFormat = new DecimalFormat("#.###");
         decimalFormat.setRoundingMode(RoundingMode.CEILING);
-        consumptionGallon.setText(decimalFormat.format(consGallon));
+        //consumptionGallon.setText(decimalFormat.format(consGallon));
     }
 
     private void setFlowRateValue(long flowRateValue) {
-        flowLS.setText("" + (flowRateValue/100));
-        double flowGallon = convertFromLiterToGallon(flowRateValue/100);
+        flowLS.setText("" + (flowRateValue / 100));
+        double flowGallon = convertFromLiterToGallon(flowRateValue / 100);
         DecimalFormat decimalFormat = new DecimalFormat("#.###");
         decimalFormat.setRoundingMode(RoundingMode.CEILING);
-        flowGpm.setText(decimalFormat.format(flowGallon));
+        //flowGpm.setText(decimalFormat.format(flowGallon));
     }
 
     private void setEventValue(String eventValue) {
@@ -207,8 +219,14 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
             reverseFrame.setBackgroundColor(Color.parseColor("#BDBDBD"));
         }
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActivity().getActionBar().setTitle("");
+    }
 
-    private double convertFromLiterToGallon(double liter){
+    private double convertFromLiterToGallon(double liter) {
         return liter * 3.7853;
     }
 }

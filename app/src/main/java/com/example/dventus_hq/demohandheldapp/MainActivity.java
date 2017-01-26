@@ -30,6 +30,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.app.Activity;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,15 +49,17 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
     private ListView drawerList;
     private RelativeLayout drawerRelativeLayout;
     private ListView connectionList;
-    ArrayAdapter<String> listAdapter;
+    private ArrayAdapter<String> listAdapter;
     public Dialog dialog;
     private ProgressDialog statusDialog;
-    BluetoothDevice selectedDevice;
-    ArrayList<BluetoothDevice> bluetoothDevices;
-    BluetoothAdapter mBluetoothAdapter;
-    Set<BluetoothDevice> pairedBD;
-    ArrayList<String> listBD;
-    BroadcastReceiver mReceiver;
+    private BluetoothDevice selectedDevice;
+    private ArrayList<BluetoothDevice> bluetoothDevices;
+    private BluetoothAdapter mBluetoothAdapter;
+    private Set<BluetoothDevice> pairedBD;
+    private ArrayList<String> listBD;
+    private BroadcastReceiver mReceiver;
+
+
     private static LiveEventInterface listener;
 
     public interface LiveEventInterface {
@@ -203,8 +206,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         if (savedInstanceState == null) {
             selectItem(0);
         }
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setIcon(android.R.color.transparent);
+        //getActionBar().setIcon(android.R.color.transparent);
         bluetoothDevices = new ArrayList<BluetoothDevice>();
         dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.devicelist);
@@ -217,6 +219,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             }
         });
         statusDialog = new ProgressDialog(this);
+        startActivityForResult(new Intent(
+                BluetoothAdapter.ACTION_REQUEST_ENABLE), 0);
+
     }
 
     @Override
@@ -234,7 +239,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                 setListener((LiveEventInterface) fragment);
                 break;
             case 2:
-                fragment = new Readings();
+                fragment = new singleReading();
                 break;
             case 3:
                 fragment = new Setting();
@@ -293,7 +298,19 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
 
 
         }
+        else
+        {
+            onBackPressed();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed()
+    {
+        if(getActionBar().getTitle().equals("Bizz Learning"))
+            finish();
+        super.onBackPressed();  // optional depending on your needs
     }
 
     private final Handler mHandler = new Handler() {
@@ -317,7 +334,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                     }
                     break;
                 }
-
             }
         }
     };

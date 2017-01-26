@@ -25,7 +25,7 @@
         android:id="@+id/textView25"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="7dp"
-        android:textColor="#1B5E20"
+        android:textColor="#01579B"
         android:textSize="30dp" />
 
     <LinearLayout
@@ -42,40 +42,15 @@
             android:id="@+id/textView38"
             android:textSize="22dp"
             android:layout_gravity="center"
-            android:textColor="#1B5E20"
+            android:textColor="#01579B"
             android:layout_marginLeft="10dp" />
 
-        <RadioGroup
+        <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/radioGroup"
-            android:orientation="horizontal"
-            android:layout_marginLeft="40dp"
-            android:layout_gravity="center">
+            android:id="@+id/spinner"
+            android:layout_gravity="center" />
 
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="DVE0002221092"
-                android:layout_marginTop="10dp"
-                android:id="@+id/radioButton"
-                android:checked="true"
-                android:textSize="17dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="DVE0003021261"
-                android:layout_marginTop="10dp"
-                android:id="@+id/radioButton2"
-                android:checked="false"
-                android:textSize="17dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp" />
-        </RadioGroup>
     </LinearLayout>
 
     <LinearLayout
@@ -92,7 +67,7 @@
             android:id="@+id/textView26"
             android:textSize="22dp"
             android:layout_gravity="center_vertical"
-            android:textColor="#1B5E20"
+            android:textColor="#01579B"
             android:layout_marginLeft="10dp" />
 
         <FrameLayout
@@ -165,7 +140,7 @@
             android:id="@+id/textView29"
             android:textSize="22dp"
             android:layout_gravity="center_vertical"
-            android:textColor="#1B5E20"
+            android:textColor="#01579B"
             android:layout_marginLeft="10dp" />
 
         <FrameLayout
@@ -231,11 +206,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Consumption Curve"
+        android:text="Consumption Rate"
         android:id="@+id/textView41"
         android:textSize="22dp"
         android:layout_gravity="center_horizontal"
-        android:textColor="#1B5E20"
+        android:textColor="#01579B"
         android:layout_marginTop="20dp" />
 
     <TextView

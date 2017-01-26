@@ -74,5 +74,6 @@ public class singleReading extends Fragment {
     public void onResume() {
         super.onResume();
         getActivity().getActionBar().setTitle("Readings");
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
