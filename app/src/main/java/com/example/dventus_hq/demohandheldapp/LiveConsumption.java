@@ -54,6 +54,13 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
     private FrameLayout coverFrame;
     private FrameLayout lowPowerFrame;
     private Spinner meterChooser;
+    private RadioGroup meterChoice;
+    private RadioButton literUnit;
+    private RadioButton gallonUnit;
+    private TextView flowRateUnitText;
+    private TextView consumptionUnitText;
+    private TextView consumptionGraphUnitText;
+    private String Unit;
 
     public String getSelectedMeter() {
         return selectedMeter;
@@ -74,6 +81,16 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_check, container, false);
+        meterChoice = (RadioGroup) rootView.findViewById(R.id.radioGroup);
+        literUnit = (RadioButton) rootView.findViewById(R.id.radioButton1);
+        flowRateUnitText = (TextView) rootView.findViewById(R.id.literPerMinuteUnitText);
+        consumptionUnitText = (TextView) rootView.findViewById(R.id.literUnitText);
+        consumptionGraphUnitText = (TextView) rootView.findViewById(R.id.consumptionGraphUnit);
+        literUnit.setSelected(true);
+        Unit = "liter";
+        literUnit.setOnClickListener(this);
+        gallonUnit = (RadioButton) rootView.findViewById(R.id.radioButton2);
+        gallonUnit.setOnClickListener(this);
         meterChooser = (Spinner) rootView.findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.MeterIDArray, android.R.layout.simple_spinner_item);
@@ -160,7 +177,13 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
         List<Entry> entries = new ArrayList<>();
         entries.add(new Entry(0, 0));
         for (int i = 0; i < consumptionList.size(); i++) {
-            entries.add(new Entry(i + 2,(consumptionList.get(i))));
+            if(Unit.equals("liter")) {
+                entries.add(new Entry(i + 2, (consumptionList.get(i))));
+            }
+            else{
+                entries.add(new Entry(i + 2,(float)convertFromLiterToGallon(consumptionList.get(i))));
+            }
+
         }
         dataSet.setValues(entries);
         lineChart.invalidate();
@@ -171,9 +194,29 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
 
     @Override
     public void onClick(View view) {
+        if(literUnit.isChecked()){
+            Unit = "liter";
+        }
+        else
+        {
+            Unit = "gallon";
+        }
+        changeUnit();
         Update();
     }
-
+  private void changeUnit(){
+      if(Unit.equals("liter")){
+          flowRateUnitText.setText("LPM");
+          consumptionUnitText.setText("Liters");
+          consumptionGraphUnitText.setText("Consumption(Liter)");
+      }
+      else
+      {
+          flowRateUnitText.setText("GPM");
+          consumptionUnitText.setText("Gallons");
+          consumptionGraphUnitText.setText("Consumption(Gallon)");
+      }
+  }
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         if (pos == 0) {
@@ -189,19 +232,28 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
     }
 
     private void setConsumptionValue(long anInt) {
-        consumptionLiter.setText("" + anInt);
-        double consGallon = convertFromLiterToGallon(anInt);
-        DecimalFormat decimalFormat = new DecimalFormat("#.###");
-        decimalFormat.setRoundingMode(RoundingMode.CEILING);
-        //consumptionGallon.setText(decimalFormat.format(consGallon));
+        if(Unit.equals("liter")) {
+            consumptionLiter.setText("" + anInt);
+        }
+        else {
+            double consGallon = convertFromLiterToGallon(anInt);
+            DecimalFormat decimalFormat = new DecimalFormat("#.###");
+            decimalFormat.setRoundingMode(RoundingMode.CEILING);
+            consumptionLiter.setText(decimalFormat.format(consGallon));
+        }
+
     }
 
     private void setFlowRateValue(long flowRateValue) {
-        flowLS.setText("" + (flowRateValue / 100));
-        double flowGallon = convertFromLiterToGallon(flowRateValue / 100);
-        DecimalFormat decimalFormat = new DecimalFormat("#.###");
-        decimalFormat.setRoundingMode(RoundingMode.CEILING);
-        //flowGpm.setText(decimalFormat.format(flowGallon));
+        if(Unit.equals("liter")) {
+            flowLS.setText("" + (flowRateValue / 100));
+        }
+        else {
+            double flowGallon = convertFromLiterToGallon(flowRateValue / 100);
+            DecimalFormat decimalFormat = new DecimalFormat("#.###");
+            decimalFormat.setRoundingMode(RoundingMode.CEILING);
+            flowLS.setText(decimalFormat.format(flowGallon));
+        }
     }
 
     private void setEventValue(String eventValue) {
