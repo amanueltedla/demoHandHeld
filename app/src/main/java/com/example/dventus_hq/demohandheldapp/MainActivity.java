@@ -1,5 +1,6 @@
 package com.example.dventus_hq.demohandheldapp;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
@@ -58,6 +59,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
     private Set<BluetoothDevice> pairedBD;
     private ArrayList<String> listBD;
     private BroadcastReceiver mReceiver;
+    private TextView title;
 
 
     private static LiveEventInterface listener;
@@ -195,6 +197,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getActionBar().setCustomView(R.layout.actionbar);
+        title=(TextView)findViewById(getResources().getIdentifier("action_bar_title", "id", getPackageName()));
         titles = getResources().getStringArray(R.array.titles);
         drawerList = (ListView) findViewById(R.id.drawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -221,7 +226,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         statusDialog = new ProgressDialog(this);
         startActivityForResult(new Intent(
                 BluetoothAdapter.ACTION_REQUEST_ENABLE), 0);
-
     }
 
     @Override
@@ -265,7 +269,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         } else {
             title = titles[position];
         }
-        getActionBar().setTitle(title);
+        this.title.setText(title);
     }
 
 

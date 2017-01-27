@@ -61,6 +61,7 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
     private TextView consumptionUnitText;
     private TextView consumptionGraphUnitText;
     private String Unit;
+    private TextView title;
 
     public String getSelectedMeter() {
         return selectedMeter;
@@ -81,12 +82,13 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_check, container, false);
+        title=(TextView)getActivity().findViewById(getResources().getIdentifier("action_bar_title", "id", getActivity().getPackageName()));
         meterChoice = (RadioGroup) rootView.findViewById(R.id.radioGroup);
         literUnit = (RadioButton) rootView.findViewById(R.id.radioButton1);
         flowRateUnitText = (TextView) rootView.findViewById(R.id.literPerMinuteUnitText);
         consumptionUnitText = (TextView) rootView.findViewById(R.id.literUnitText);
         consumptionGraphUnitText = (TextView) rootView.findViewById(R.id.consumptionGraphUnit);
-        literUnit.setSelected(true);
+        literUnit.setChecked(true);
         Unit = "liter";
         literUnit.setOnClickListener(this);
         gallonUnit = (RadioButton) rootView.findViewById(R.id.radioButton2);
@@ -118,19 +120,11 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
         flowLS = (TextView) rootView.findViewById(R.id.flowLS);
         flowLS.setTextSize(40);
         flowLS.setTypeface(tf);
-        //flowGpm = (TextView) rootView.findViewById(R.id.flowGpm);
-        //flowGpm.setTextSize(40);
-        //flowGpm.setTypeface(tf);
         consumptionLiter = (TextView) rootView.findViewById(R.id.consumptionLiters);
         consumptionLiter.setTextSize(40);
         consumptionLiter.setTypeface(tf);
-        //consumptionGallon = (TextView) rootView.findViewById(R.id.consumptionGallons);
-        //consumptionGallon.setTextSize(40);
-        //consumptionGallon.setTypeface(tf);
         lineChart = (LineChart) rootView.findViewById(R.id.chart);
         lineChart.animateY(2000);
-        // lineChart.animateX(3000);
-        //lineChart.animateXY(2000,3000);
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextSize(13f);
@@ -175,7 +169,6 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
             setEventValue("0000");
         }
         List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(0, 0));
         for (int i = 0; i < consumptionList.size(); i++) {
             if(Unit.equals("liter")) {
                 entries.add(new Entry(i + 2, (consumptionList.get(i))));
@@ -209,12 +202,14 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
           flowRateUnitText.setText("LPM");
           consumptionUnitText.setText("Liters");
           consumptionGraphUnitText.setText("Consumption(Liter)");
+          dataSet.setLabel("Consumption(Liter)");
       }
       else
       {
           flowRateUnitText.setText("GPM");
-          consumptionUnitText.setText("Gallons");
+          consumptionUnitText.setText("Gal");
           consumptionGraphUnitText.setText("Consumption(Gallon)");
+          dataSet.setLabel("Consumption(Gallon)");
       }
   }
     public void onItemSelected(AdapterView<?> parent, View view,
@@ -275,7 +270,7 @@ public class LiveConsumption extends Fragment implements MainActivity.LiveEventI
     public void onResume() {
         super.onResume();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActivity().getActionBar().setTitle("");
+        title.setText("SMART WATER METER DATA LOGGER");
     }
 
     private double convertFromLiterToGallon(double liter) {

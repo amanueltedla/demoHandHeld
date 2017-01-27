@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.dventus_hq.demohandheldapp.fileActions.FileReader;
 import com.example.dventus_hq.demohandheldapp.parameters.MeterData;
@@ -26,6 +27,7 @@ public class Home extends Fragment implements View.OnClickListener {
     private FrameLayout reading;
     private FrameLayout setting;
     private FrameLayout liveReading;
+    private TextView title;
 
     public Home() {
         // Required empty public constructor
@@ -39,6 +41,7 @@ public class Home extends Fragment implements View.OnClickListener {
         reading.setOnClickListener(this);
         setting = (FrameLayout) rootView.findViewById(R.id.settingButton);
         setting.setOnClickListener(this);
+        title=(TextView)getActivity().findViewById(getResources().getIdentifier("action_bar_title", "id", getActivity().getPackageName()));
         liveReading = (FrameLayout) rootView.findViewById(R.id.liveReadingButton);
         liveReading.setOnClickListener(this);
         return rootView;
@@ -71,7 +74,7 @@ public class Home extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
-        getActivity().getActionBar().setTitle("Home");
+        title.setText("HOME");
     }
 
 }
